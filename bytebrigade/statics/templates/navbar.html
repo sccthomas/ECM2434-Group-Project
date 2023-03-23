@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'figures/favicon.ico' %}"/>
+    <link rel="stylesheet" href="{% static 'assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Navbar-Centered-Brand-Dark-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/background.css' %}">
+    <link rel="stylesheet" href="{% static 'style/css/styles.css' %}">
+    <!-- Slideshow Background -->
+    {% block header %}  {% endblock %}
+</head>
+
+<ul class="slideshow unordered">
+    <li><span>Image 01</span></li>
+    <li><span>Image 02</span></li>
+    <li><span>Image 03</span></li>
+    <li><span>Image 04</span></li>
+    <li><span>Image 05</span></li>
+    <li><span>Image 06</span></li>
+    <li><span>Image 07</span></li>
+    <li><span>Image 08</span></li>
+</ul>
+
+<body class="font-monospace text-center bg-secondary bg-gradient navbar-styles">
+<nav class="navbar navbar-expand-md justify-content-center navbar-styles nav-show">
+    <div class="container">
+        <a class="navbar-brand d-flex" style="color: var(--primary)"><img src="{% static 'figures/RecEx-logo.png' %}"
+                                                                          height="50"/></a>
+        <div class="d-inline-flex">
+            {% if request.user.is_authenticated %}
+                <div id="toggle-account" class="dropdown" style="border-radius: 8px; background-color:var(--primary); padding: 8px;"><a
+                        class="dropdown-toggle text-center" aria-expanded="false" data-bs-toggle="dropdown" href="#"
+                        style="border-radius: 8px;color: var(--bs-black); text-decoration: none;">Account</a>
+                    <div class="dropdown-menu" style="z-index: 1;">
+                        <p class="dropdown-item">Hello {{ request.user.username }}</p>
+                        <a class="dropdown-item" style="color: black" href="{% url 'account' %}"><img src="{% static 'figures/nav_items/account_icon.png' %}"
+                                                                                                      height="25"/> Profile</a>
+                        <a class="dropdown-item" style="color: black" href="{% url 'shop' %}"><img src="{% static 'figures/nav_items/shop.png' %}"
+                                                                                                      height="25"/> Shop</a>
+                        <a class="dropdown-item" style="color: black" href="{% url 'product_dex' %}"><img src="{% static 'figures/nav_items/pokedex.png' %}"
+                                                                                                      height="25"/> ProductDex</a>
+                        <a class="dropdown-item" style="color: black" href="{% url 'logout' %}">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="dropdown" style="border-radius: 8px;background: var(--primary);padding: 8px;"><a
+                        class="dropdown-toggle text-center" aria-expanded="false" data-bs-toggle="dropdown"
+                        style="border-radius: 8px;color: var(--bs-black); text-decoration: none;">Login</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" style="color: black" href="{% url 'login' %}">Log-In</a>
+                        <a class="dropdown-item" style="color: black" href="{% url 'registration' %}">Sign-Up</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <button id="toggle-navigation" data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-6"
+                style="color: var(--bs-black);background: var(--primary);"><span class="visually-hidden">Toggle
+            navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-6" style="z-index: 0;">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    {% if request.get_full_path == "/" %}
+                        <li class="nav-item"><a class="btn btn-light me-2" role="button"
+                                                href="{% url 'leaderboard' %}"
+                                                style="background-color: var(--primary); color: var(--bs-btn-disabled-color);"><img src="{% static 'figures/nav_items/leaderboard_icon.png' %}"
+                                                                                                      height="25"/> Leaderboard</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="btn btn-light me-2" role="button"
+                                                href="{% url 'index' %}"
+                                                style="background-color: var(--primary); color: var(--bs-btn-disabled-color);"><img src="{% static 'figures/nav_items/home.png' %}"height="25"/> Home</a>
+                        </li>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-light me-2" role="button" href="{% url 'instruction' %}"
+                       style="background: var(--primary);color: var(--bs-btn-disabled-color);"><img src="{% static 'figures/nav_items/question-mark.png' %}"height="25"/>Instructions</a>
+                </li>
+                <li class="nav-item"><a class="btn btn-light me-2" role="button"
+                                        href="{% url 'bin_map' %}"
+                                        style="background-color: var(--primary); color: var(--bs-btn-disabled-color);"><img src="{% static 'figures/nav_items/map.png' %}" height="25"/>Map</a>
+                </li>
+                {% if request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="btn btn-light me-2" role="button"
+                           href="{% url 'gamekeeperPage' %}"
+                           style="background: var(--primary);color: var(--bs-btn-disabled-color);"><img src="{% static 'figures/nav_items/gamekeeper.png' %}" height="25"/> GameKeeper</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content">
+    {% block content %}{% endblock %}
+</div>
+<div style="flex: 1;"></div>
+<footer class="text-center footer-styles mt-4">
+    <div class="container text-muted py-4 py-lg-5">
+        <ul class="list-inline">
+            <li class="list-inline-item me-4"><a class="link-secondary" href="{% url "license" %}">License</a></li>
+            <li class="list-inline-item me-4"><a class="link-secondary" href="{% url "privacy" %}">Privacy-Policy</a>
+            </li>
+            <li class="list-inline-item"><a class="link-secondary" href="{% url "aboutus" %}">About-Us</a></li>
+        </ul>
+        <p class="mb-0">Copyright © 2023 ByteBrigade</p>
+        <p class="mb-0">V 1.037ABT-20233221457</p>
+    </div>
+</footer>
+</body>
+
+{% block script %} {% endblock %}
+<script src="{% static 'assets/bootstrap/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

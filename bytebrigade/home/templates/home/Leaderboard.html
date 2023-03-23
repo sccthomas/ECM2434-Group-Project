@@ -1,0 +1,60 @@
+{% extends 'navbar.html' %}
+{% load static %}
+
+{% block title %} Leaderboard {% endblock %}
+
+{% block content %}
+    </div>
+    <div class="feeds" style="margin: 0 auto;color: var(--secondary); width: 80vw;">
+        <div class="top-bar">
+            <h3 style="width: 200px">Rank</h3>
+            <h3 style="width: 200px">Username</h3>
+            <h3 style="width: 200px">Points</h3>
+        </div>
+        <div style="color: black;" id="leaderboard">
+            {% for item in Statistics %}
+             <div class="content-container">
+                <div class="content-bar-cells">{{forloop.counter}}</div>
+                <div class="content-bar-cells">{{item.user}}</div>
+                <div class="content-bar-cells">{{item.points}}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="top-bar" style="align-items: center; justify-content: center;">
+            <input type="search" id = "myInput" onkeyup="search()" style="background: var(--secondary);border-style: solid;border-color: var(--primary);" placeholder="Search for a user">
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    /**
+     * This function is used to search the leaderboard for a particular user. It loops through the divs
+     * and hides any users that do not have a matching expression entered into the search box field
+     */
+    function search() {
+      // Get the input field and filter value
+      var input = document.getElementById("myInput");
+      var filter = input.value.toUpperCase();
+
+      // Get the leaderboard container and leaderboard items
+      var leaderboard = document.getElementById("leaderboard");
+      var items = leaderboard.getElementsByClassName("content-container");
+
+      // Loop through all leaderboard items, and hide those that don't match the search query
+      for (var i = 0; i < items.length; i++) {
+        var username = items[i].getElementsByClassName("content-bar-cells")[1];
+        if (username.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          items[i].style.display = "";
+        } else {
+          items[i].style.display = "none";
+        }
+      }
+    }
+
+
+</script>
+
+{% endblock %}
+
